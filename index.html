@@ -6,18 +6,18 @@
 <title>Riyadh School Finder — ranked by your real commute</title>
 <meta name="description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
 
-<!-- Open Graph / LinkedIn preview. IMPORTANT: replace https://hamzamanagerajeek.github.io/riyadh-school-finder// below
+<!-- Open Graph / LinkedIn preview. IMPORTANT: replace REPLACE_WITH_YOUR_URL below
      with your live GitHub Pages URL once deployed, e.g.
      https://yourusername.github.io/riyadh-school-finder -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Riyadh School Finder — ranked by your real commute">
 <meta property="og:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
-<meta property="og:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder//og-image.png">
-<meta property="og:url" content="https://hamzamanagerajeek.github.io/riyadh-school-finder//">
+<meta property="og:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
+<meta property="og:url" content="REPLACE_WITH_YOUR_URL/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Riyadh School Finder — ranked by your real commute">
 <meta name="twitter:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time.">
-<meta name="twitter:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder///og-image.png">
+<meta name="twitter:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <style>
@@ -1040,7 +1040,7 @@ const LANDMARKS = [
     const url = ORS_BASE + "/geocode/search?api_key=" + encodeURIComponent(ORS_API_KEY) +
       "&text=" + encodeURIComponent(query + ", Riyadh, Saudi Arabia") +
       "&boundary.country=SA&size=1";
-    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/json", "Authorization": ORS_API_KEY } }, 8000);
+    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/geo+json; charset=UTF-8", "Authorization": ORS_API_KEY } }, 8000);
     await logIfError(res, "geocode");
     if (!res.ok) throw new Error("geocode failed: " + res.status);
     const data = await res.json();
@@ -1053,13 +1053,18 @@ const LANDMARKS = [
     if (!ORS_ENABLED) throw new Error("routing not configured");
     const url = ORS_BASE + "/v2/directions/driving-car?api_key=" + encodeURIComponent(ORS_API_KEY) +
       `&start=${lon1},${lat1}&end=${lon2},${lat2}`;
-    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/json", "Authorization": ORS_API_KEY } }, 8000);
+    // This endpoint now only serves GeoJSON (confirmed via a live 406 error:
+    // "Acceptable representations: application/geo+json;charset=UTF-8") —
+    // asking for plain application/json gets rejected.
+    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/geo+json; charset=UTF-8", "Authorization": ORS_API_KEY } }, 8000);
     await logIfError(res, "directions");
     if (!res.ok) throw new Error("route failed: " + res.status);
     const data = await res.json();
-    const route = data && data.routes && data.routes[0];
-    if (!route) throw new Error("no route");
-    return route.summary.duration / 60; // seconds -> minutes
+    // GeoJSON shape: FeatureCollection -> features[0].properties.summary.duration
+    const feature = data && data.features && data.features[0];
+    const duration = feature && feature.properties && feature.properties.summary && feature.properties.summary.duration;
+    if (duration == null) throw new Error("no route");
+    return duration / 60; // seconds -> minutes
   }
 
   function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -1322,7 +1327,7 @@ const LANDMARKS = [
      REPLACE_WITH_YOUR_GOATCOUNTER_CODE below with your site code. Until you
      do, this script simply won't load anything (harmless 404), so it's safe
      to deploy before you've set it up. -->
-<script data-goatcounter="https://riyadh-schools.goatcounter.com/count"
+<script data-goatcounter="https://REPLACE_WITH_YOUR_GOATCOUNTER_CODE.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

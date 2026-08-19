@@ -6,18 +6,18 @@
 <title>Riyadh School Finder — ranked by your real commute</title>
 <meta name="description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
 
-<!-- Open Graph / LinkedIn preview. IMPORTANT: replace https://hamzamanagerajeek.github.io/riyadh-school-finder below
+<!-- Open Graph / LinkedIn preview. IMPORTANT: replace REPLACE_WITH_YOUR_URL below
      with your live GitHub Pages URL once deployed, e.g.
      https://yourusername.github.io/riyadh-school-finder -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Riyadh School Finder — ranked by your real commute">
 <meta property="og:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
-<meta property="og:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/og-image.png">
-<meta property="og:url" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/">
+<meta property="og:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
+<meta property="og:url" content="REPLACE_WITH_YOUR_URL/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Riyadh School Finder — ranked by your real commute">
 <meta name="twitter:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time.">
-<meta name="twitter:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/og-image.png">
+<meta name="twitter:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <style>
@@ -969,24 +969,11 @@ const SCHOOLS = [
   { name: "Manarat Al Riyadh School", district: "Al Malaz (approx.)", lat: 24.6660, lon: 46.7300, curricula: ["National"], fee: 33100 },
 ];
 
-// Well-known Riyadh landmarks/districts for the quick-select "home"/"work"
-// picker, so the demo works instantly with zero network calls.
+// Riyadh landmarks/districts for the quick-select "home"/"work" picker, so
+// the demo works instantly with zero network calls. Includes every district
+// used in the SCHOOLS list above (so every school is reachable as a home/work
+// point too) plus a few extra well-known landmarks. Alphabetical.
 const LANDMARKS = [
-  { name: "Olaya", lat: 24.6940, lon: 46.6853 },
-  { name: "King Fahd District", lat: 24.7200, lon: 46.6570 },
-  { name: "Hittin", lat: 24.7660, lon: 46.6180 },
-  { name: "Al Malqa", lat: 24.8090, lon: 46.6320 },
-  { name: "Al Yasmin", lat: 24.8220, lon: 46.6550 },
-  { name: "Al Nakheel", lat: 24.7460, lon: 46.6410 },
-  { name: "Al Muruj", lat: 24.7420, lon: 46.6640 },
-  { name: "Al Sahafah", lat: 24.7936, lon: 46.6389 },
-  { name: "Diriyah / King Salman Park area", lat: 24.7371, lon: 46.5753 },
-  { name: "Al Malaz", lat: 24.6602, lon: 46.7351 },
-  { name: "Al Woroud", lat: 24.7168, lon: 46.6799 },
-  { name: "King Abdullah Financial District (KAFD)", lat: 24.7590, lon: 46.6420 },
-  { name: "Al Naseem", lat: 24.6960, lon: 46.7740 },
-  { name: "Diplomatic Quarter", lat: 24.6890, lon: 46.6180 },
-  { name: "Riyadh City Center (Al Bathaa)", lat: 24.6300, lon: 46.7150 },
   { name: "Ad Diriyah / King Salman Park area", lat: 24.7371, lon: 46.5753 },
   { name: "Al Aqiq", lat: 24.7789, lon: 46.6104 },
   { name: "Al Futah", lat: 24.6115, lon: 46.6835 },
@@ -1072,39 +1059,49 @@ const LANDMARKS = [
     }
   }
 
+  // Geocoding (turning a typed address into coordinates) uses OpenStreetMap's
+  // Nominatim instead of openrouteservice — HeiGIT's geocode/search endpoint
+  // doesn't send CORS headers at all, which blocks it from browser JS
+  // entirely (confirmed via a live CORS preflight failure). Nominatim does
+  // support CORS on normal responses; it only omits those headers on its own
+  // 403/429/502 rate-limit/capacity errors, which our try/catch below already
+  // handles by falling back to the quick-select estimate.
   async function geocode(query) {
-    if (!ORS_ENABLED) throw new Error("routing not configured");
-    const url = ORS_BASE + "/geocode/search?api_key=" + encodeURIComponent(ORS_API_KEY) +
-      "&text=" + encodeURIComponent(query + ", Riyadh, Saudi Arabia") +
-      "&boundary.country=SA&size=1";
-    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/geo+json; charset=UTF-8", "Authorization": ORS_API_KEY } }, 8000);
-    await logIfError(res, "geocode");
+    const url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" +
+      encodeURIComponent(query + ", Riyadh, Saudi Arabia");
+    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/json" } }, 8000);
     if (!res.ok) throw new Error("geocode failed: " + res.status);
     const data = await res.json();
-    const f = data && data.features && data.features[0];
-    if (!f) throw new Error("no results");
-    return { lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0], label: f.properties.label };
+    if (!data || !data.length) throw new Error("no results");
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), label: data[0].display_name };
   }
 
-  async function routeMinutes(lat1, lon1, lat2, lon2) {
+  // Bulk drive-time lookup: ONE request gets the origin's drive time to every
+  // destination at once, via the Matrix API, instead of one Directions call
+  // per school. A 12-school search with a home+work origin used to fire up
+  // to 24 requests; this fires at most 2 — important since the API key is
+  // shared across every visitor to a public page, not just one user.
+  async function matrixMinutes(originLat, originLon, destinations) {
     if (!ORS_ENABLED) throw new Error("routing not configured");
-    const url = ORS_BASE + "/v2/directions/driving-car?api_key=" + encodeURIComponent(ORS_API_KEY) +
-      `&start=${lon1},${lat1}&end=${lon2},${lat2}`;
-    // This endpoint now only serves GeoJSON (confirmed via a live 406 error:
-    // "Acceptable representations: application/geo+json;charset=UTF-8") —
-    // asking for plain application/json gets rejected.
-    const res = await fetchWithTimeout(url, { headers: { "Accept": "application/geo+json; charset=UTF-8", "Authorization": ORS_API_KEY } }, 8000);
-    await logIfError(res, "directions");
-    if (!res.ok) throw new Error("route failed: " + res.status);
+    const locations = [[originLon, originLat]].concat(destinations.map((d) => [d.lon, d.lat]));
+    const body = {
+      locations,
+      sources: [0],
+      destinations: destinations.map((_, i) => i + 1),
+      metrics: ["duration"],
+    };
+    const res = await fetchWithTimeout(ORS_BASE + "/v2/matrix/driving-car", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "Authorization": ORS_API_KEY },
+      body: JSON.stringify(body),
+    }, 10000);
+    await logIfError(res, "matrix");
+    if (!res.ok) throw new Error("matrix failed: " + res.status);
     const data = await res.json();
-    // GeoJSON shape: FeatureCollection -> features[0].properties.summary.duration
-    const feature = data && data.features && data.features[0];
-    const duration = feature && feature.properties && feature.properties.summary && feature.properties.summary.duration;
-    if (duration == null) throw new Error("no route");
-    return duration / 60; // seconds -> minutes
+    const durations = data && data.durations && data.durations[0];
+    if (!durations) throw new Error("no matrix durations");
+    return durations.map((d) => (d == null ? null : d / 60)); // seconds -> minutes, same order as destinations
   }
-
-  function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
   // ---------- state ----------
   let map, homeMarker, workMarker;
@@ -1267,22 +1264,25 @@ const LANDMARKS = [
 
     if (!ORS_ENABLED) return; // stay on estimated times
 
-    // enrich with real driving times, politely rate-limited
-    for (const s of top) {
+    // enrich with real driving times: one bulk Matrix call per origin
+    // (home, optionally work) instead of one call per school.
+    try {
+      const homeDurations = await matrixMinutes(home.lat, home.lon, top);
+      top.forEach((s, i) => { if (homeDurations[i] != null) s._homeMinReal = homeDurations[i]; });
+    } catch (e) { /* keep estimates for all */ }
+
+    if (work) {
       try {
-        s._homeMinReal = await routeMinutes(home.lat, home.lon, s.lat, s.lon);
-      } catch (e) { /* keep estimate */ }
-      await sleep(180);
-      if (work) {
-        try {
-          s._workMinReal = await routeMinutes(work.lat, work.lon, s.lat, s.lon);
-        } catch (e) { /* keep estimate */ }
-        await sleep(180);
-      }
+        const workDurations = await matrixMinutes(work.lat, work.lon, top);
+        top.forEach((s, i) => { if (workDurations[i] != null) s._workMinReal = workDurations[i]; });
+      } catch (e) { /* keep estimates for all */ }
+    }
+
+    top.forEach((s) => {
       s._score = work
         ? (weightHome * (s._homeMinReal ?? s._homeMin) + weightWork * (s._workMinReal ?? s._workMin))
         : (s._homeMinReal ?? s._homeMin);
-    }
+    });
     top.sort((a, b) => a._score - b._score);
     renderResults(top, home, work);
     drawMap(home, work, top);

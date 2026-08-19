@@ -6,7 +6,7 @@
 <title>Riyadh School Finder — ranked by your real commute</title>
 <meta name="description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
 
-<!-- Open Graph / LinkedIn preview. IMPORTANT: replace https://hamzamanagerajeek.github.io/riyadh-school-finder/ below
+<!-- Open Graph / LinkedIn preview. IMPORTANT: replace https://hamzamanagerajeek.github.io/riyadh-school-finder below
      with your live GitHub Pages URL once deployed, e.g.
      https://yourusername.github.io/riyadh-school-finder -->
 <meta property="og:type" content="website">
@@ -20,6 +20,9 @@
 <meta name="twitter:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/og-image.png">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* required styles */
 
@@ -684,36 +687,94 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 
 :root {
-  --accent: #0f6e5c;
-  --accent-dark: #0b5346;
-  --ink: #1f2937;
-  --ink-mid: #4b5563;
-  --ink-light: #6b7280;
-  --bg: #f6f7f5;
+  --ink: #121115;
+  --ink-soft: #322f3a;
+  --paper: #faf8f5;
   --card: #ffffff;
-  --border: #e5e7eb;
-  --warn-bg: #fff7ed;
-  --warn-border: #fed7aa;
+  --border: #ece7e0;
+  --border-strong: #ddd6cb;
+  --muted: #8a8390;
+  --accent: #ff5a36;
+  --accent-dark: #e0431f;
+  --accent-ink: #fff3ee;
+  --navy: #1b1a2e;
+  --ok-bg: #fff2ea;
+  --ok-border: #ffd3bd;
+  --shadow-sm: 0 1px 2px rgba(18,17,21,0.06);
+  --shadow-md: 0 6px 20px rgba(18,17,21,0.08);
+  --shadow-lg: 0 16px 40px rgba(18,17,21,0.14);
+  --radius: 14px;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--paper);
   color: var(--ink);
+  -webkit-font-smoothing: antialiased;
 }
 .app { display: flex; flex-direction: column; min-height: 100vh; }
-header.topbar {
-  padding: 18px 24px;
-  background: var(--accent);
-  color: #fff;
-}
-header.topbar h1 { margin: 0; font-size: 20px; font-weight: 700; }
-header.topbar p { margin: 4px 0 0; font-size: 13px; opacity: 0.9; }
 
+/* ---------- Header / hero ---------- */
+header.topbar {
+  position: relative;
+  padding: 34px 28px 30px;
+  background: var(--navy);
+  background-image:
+    radial-gradient(600px 220px at 12% -20%, rgba(255,90,54,0.35), transparent 60%),
+    radial-gradient(500px 260px at 100% 0%, rgba(255,90,54,0.18), transparent 55%);
+  color: #fff;
+  overflow: hidden;
+}
+header.topbar .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffcab8;
+  background: rgba(255,90,54,0.16);
+  border: 1px solid rgba(255,138,102,0.35);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+header.topbar h1 {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 3.2vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  max-width: 640px;
+}
+header.topbar h1 em {
+  font-style: normal;
+  color: #ff9a76;
+}
+header.topbar p.sub {
+  margin: 0 0 18px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.72);
+  max-width: 520px;
+  line-height: 1.5;
+}
+.hero-stats { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-stats span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* ---------- Layout ---------- */
 .layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 388px 1fr;
   gap: 0;
   flex: 1;
   min-height: 0;
@@ -723,117 +784,154 @@ header.topbar p { margin: 4px 0 0; font-size: 13px; opacity: 0.9; }
 }
 
 .panel {
-  padding: 20px;
+  padding: 24px 22px 28px;
   overflow-y: auto;
   border-right: 1px solid var(--border);
-  background: #fff;
+  background: var(--card);
 }
-.field { margin-bottom: 16px; }
-.field label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mid); margin-bottom: 6px; }
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 7px;
+  letter-spacing: -0.005em;
+}
 select, input[type="text"], input[type="number"] {
   width: 100%;
-  padding: 9px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  padding: 11px 12px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
   font-size: 14px;
+  font-family: inherit;
   background: #fff;
   color: var(--ink);
+  transition: border-color .15s, box-shadow .15s;
+}
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,90,54,0.14);
 }
 .row { display: flex; gap: 8px; }
 .row > * { flex: 1; }
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 14px;
+button { cursor: pointer; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  width: 100%;
+  padding: 14px;
+  font-size: 15.5px;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 20px rgba(255,90,54,0.35);
+  transition: transform .12s, box-shadow .12s, background .12s;
 }
-.btn-primary { background: var(--accent); color: #fff; width: 100%; padding: 12px; font-size: 15px; }
-.btn-primary:hover { background: var(--accent-dark); }
-.btn-secondary { background: #eef2f0; color: var(--accent-dark); }
-.btn-locate { background: #eef2f0; color: var(--accent-dark); padding: 9px 12px; white-space: nowrap; }
-.hint { font-size: 12px; color: var(--ink-light); margin-top: 4px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(255,90,54,0.42); }
+.btn-primary:active { transform: translateY(0); }
+.btn-locate {
+  background: var(--ink);
+  color: #fff;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+.btn-locate:hover { background: var(--ink-soft); }
+.hint { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .chip {
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border-strong);
   border-radius: 999px;
-  padding: 5px 11px;
+  padding: 6px 13px;
   font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
   background: #fff;
-  color: var(--ink-mid);
+  color: var(--ink-soft);
   user-select: none;
+  transition: all .12s;
 }
-.chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.slider-value { font-size: 12.5px; color: var(--ink-mid); float: right; }
-input[type="range"] { width: 100%; accent-color: var(--accent); }
+.chip:hover { border-color: var(--accent); color: var(--accent-dark); }
+.chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.slider-value { font-size: 12px; font-weight: 700; color: var(--accent-dark); float: right; }
+input[type="range"] { width: 100%; accent-color: var(--accent); height: 4px; }
 
 .disclaimer {
-  background: var(--warn-bg);
-  border: 1px solid var(--warn-border);
-  border-radius: 8px;
-  padding: 10px 12px;
+  background: #f5f2ec;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 14px;
   font-size: 12px;
-  color: #7c4a12;
-  margin-top: 18px;
-  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-top: 22px;
+  line-height: 1.55;
 }
-.disclaimer strong { display: block; margin-bottom: 3px; }
+.disclaimer strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 12.5px; }
 
 .content { display: flex; flex-direction: column; min-height: 0; }
 #map { flex: 1; min-height: 320px; }
-.results { padding: 14px 18px; overflow-y: auto; max-height: 46vh; border-top: 1px solid var(--border); background: #fbfbfa; }
-.results-empty { color: var(--ink-light); font-size: 14px; padding: 30px 10px; text-align: center; }
+.results { padding: 18px 20px; overflow-y: auto; max-height: 46vh; border-top: 1px solid var(--border); background: var(--paper); }
+.results-empty {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 40px 20px;
+  text-align: center;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: #fff;
+}
 .result-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 11px;
   display: flex;
-  gap: 12px;
+  gap: 13px;
   align-items: flex-start;
   cursor: pointer;
-  transition: box-shadow .15s;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .15s, transform .15s, border-color .15s;
 }
-.result-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+.result-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border-strong); }
 .rank-badge {
-  min-width: 28px; height: 28px; border-radius: 50%;
-  background: var(--accent); color: #fff; font-weight: 700; font-size: 13px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  min-width: 30px; height: 30px; border-radius: 9px;
+  background: var(--ink); color: #fff; font-weight: 800; font-size: 13px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
 }
-.result-body { flex: 1; }
-.result-title { font-weight: 700; font-size: 14.5px; margin-bottom: 2px; }
-.result-meta { font-size: 12.5px; color: var(--ink-light); margin-bottom: 6px; }
-.result-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
-.tag { background: #eef2f0; color: var(--accent-dark); font-size: 11px; padding: 2px 7px; border-radius: 999px; }
-.commute-line { font-size: 13px; font-weight: 600; color: var(--ink); }
-.commute-line .muted { font-weight: 400; color: var(--ink-light); font-size: 12px; }
+.result-card:nth-child(1) .rank-badge { background: var(--accent); }
+.result-body { flex: 1; min-width: 0; }
+.result-title { font-weight: 750; font-size: 14.5px; margin-bottom: 3px; letter-spacing: -0.005em; color: var(--ink); }
+.result-meta { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
+.result-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+.tag { background: var(--accent-ink); color: var(--accent-dark); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.commute-line { font-size: 13px; font-weight: 700; color: var(--ink); }
+.commute-line .muted { font-weight: 500; color: var(--muted); font-size: 12px; }
 .spinner-inline {
-  display: inline-block; width: 11px; height: 11px; border: 2px solid #ccc;
+  display: inline-block; width: 11px; height: 11px; border: 2px solid #e5ded4;
   border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite;
   margin-right: 5px; vertical-align: middle;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.leaflet-div-icon.home-icon { background: #2563eb; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
-.leaflet-div-icon.work-icon { background: #d97706; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.leaflet-div-icon.home-icon { background: var(--ink); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.leaflet-div-icon.work-icon { background: #2f6fed; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
 .leaflet-div-icon.school-icon {
-  background: var(--accent); color: #fff; border: 2px solid #fff; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
-  box-shadow: 0 1px 4px rgba(0,0,0,.4);
+  background: var(--accent); color: #fff; border: 3px solid #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
 }
-.footer-note { padding: 8px 18px; font-size: 11px; color: var(--ink-light); text-align: center; border-top: 1px solid var(--border); }
-.footer-note a { color: var(--accent-dark); }
+.footer-note { padding: 10px 20px; font-size: 11.5px; color: var(--muted); text-align: center; border-top: 1px solid var(--border); background: var(--card); }
+.footer-note a { color: var(--accent-dark); text-decoration: none; font-weight: 600; }
+.footer-note a:hover { text-decoration: underline; }
 #configBanner {
   display: none;
-  background: #eef2f0;
-  color: var(--accent-dark);
+  background: var(--ok-bg);
+  color: #9a3412;
   font-size: 12.5px;
+  font-weight: 600;
   text-align: center;
-  padding: 7px 14px;
-  border-bottom: 1px solid var(--border);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--ok-border);
 }
 
 </style>
@@ -841,8 +939,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 <body>
 <div class="app">
   <header class="topbar">
-    <h1>Riyadh School Finder — ranked by your commute</h1>
-    <p>Not just by district — by real drive time from home and work</p>
+    <span class="eyebrow">🇸🇦 Riyadh, Saudi Arabia</span>
+    <h1>Stop guessing which school<br>is actually <em>close enough.</em></h1>
+    <p class="sub">Set your home and work, and see schools ranked by real drive time — not just which district they're in.</p>
+    <div class="hero-stats">
+      <span>🚗 Real drive times</span>
+      <span>🗺️ Interactive map</span>
+      <span>🎓 35+ real schools</span>
+      <span>💸 Free, no signup</span>
+    </div>
   </header>
   <div id="configBanner"></div>
   <div class="layout">
@@ -888,16 +993,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
         <div class="chips" id="curriculumChips"></div>
       </div>
 
-      <button class="btn-primary" id="findBtn">Find matching schools</button>
-      <div class="hint" id="status" style="margin-top:8px; color:#b45309;"></div>
+      <button class="btn-primary" id="findBtn">Find matching schools →</button>
+      <div class="hint" id="status" style="margin-top:8px; color:var(--accent-dark); font-weight:600;"></div>
 
       <div class="disclaimer">
         <strong>About this tool</strong>
         Runs on a hand-curated sample of ~35 real Riyadh private/international schools pulled from
-        public school directories, with district level coordinates
-        that are approximate, not verified per building geocodes. Drive times come from
-        OpenRouteService in your browser, If that's unreachable, times shown are estimates based on
-        straight line distance instead. Fees and details may be out of date always confirm with
+        public school directories (not a live or complete feed), with district-level coordinates
+        that are approximate, not verified per-building geocodes. Drive times come from
+        OpenRouteService in your browser; if that's unreachable, times shown are estimates based on
+        straight-line distance instead. Fees and details may be out of date — always confirm with
         the school directly.
       </div>
     </div>
@@ -1361,12 +1466,10 @@ const LANDMARKS = [
 
 <!-- Privacy-respecting analytics (GoatCounter — no cookies, no personal data
      collected). Sign up free at https://www.goatcounter.com, then replace
-     REPLACE_WITH_YOUR_GOATCOUNTER_CODE below with your site code. Until you
+     riyadh-schools below with your site code. Until you
      do, this script simply won't load anything (harmless 404), so it's safe
      to deploy before you've set it up. -->
-<script data-goatcounter="https://riyadh-schools.goatcounter.com/count" 
-	async src="//gc.zgo.at/count.js">
-	
-	</script>
+<script data-goatcounter="https://riyadh-schools.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

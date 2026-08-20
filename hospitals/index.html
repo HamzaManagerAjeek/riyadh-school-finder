@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riyadh Hospital &amp; Doctor Finder — nearest ER, real doctor profiles</title>
-<meta name="description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty — qualifications, training background and languages, sourced from hospitals' own directories.">
+<title>Riyadh Hospital &amp; Doctor Finder - nearest ER, real doctor profiles</title>
+<meta name="description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty, qualifications, training background and languages, sourced from hospitals' own directories.">
 
 <!-- Open Graph / LinkedIn preview. IMPORTANT: replace REPLACE_WITH_YOUR_URL below
      with your live GitHub Pages URL once deployed, e.g.
      https://yourusername.github.io/riyadh-hospital-doctor-finder -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Riyadh Hospital & Doctor Finder">
-<meta property="og:description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty — qualifications, training background and languages.">
+<meta property="og:description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty, qualifications, training background and languages.">
 <meta property="og:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
 <meta property="og:url" content="REPLACE_WITH_YOUR_URL/">
 <meta name="twitter:card" content="summary_large_image">
@@ -1081,16 +1081,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: 4px; }
 
         <div class="disclaimer">
           <strong>About this module</strong>
-          A hand-curated sample of real doctors pulled from hospitals' own public "find a doctor"
-          pages — currently covers Saudi German Hospital Riyadh, Mouwasat Hospital Riyadh and Dallah
+          A hand curated sample of real doctors pulled from hospitals' own public "find a doctor"
+          pages currently covers Saudi German Hospital Riyadh, Mouwasat Hospital Riyadh and Dallah
           Hospital, with the remaining hospitals to be added as their directories become available.
           Qualifications, training background and languages are copied from each doctor's own
-          published profile where shown — some source listings only exposed name, specialty and
-          hospital. This list does <strong>not</strong> show or guess anyone's nationality or
-          ethnicity — that isn't published by hospitals or by Saudi Arabia's largest doctor-booking
+          published profile where shown some source listings only exposed name, specialty and
+          hospital. This list does not show or guess anyone's nationality or
+		  ethnicity that isn't published by hospitals or by Saudi Arabia's largest doctor booking
           platform, and guessing it from a name would be unreliable and unfair to real people. Medical
           school (shown under each doctor) is often a useful hint if language/cultural fit matters to
-          you. This is not a booking system — "View profile &amp; book" opens the hospital's own
+          you. This is not a booking system "View profile &amp; book" opens the hospital's own
           official page.
         </div>
       </div>
@@ -1537,7 +1537,7 @@ const DOCTORS = [
       candidates = candidates.filter((h) => activeHospitalTypes.has(h.type));
     }
     if (candidates.length === 0) {
-      renderEmpty("No hospitals match that filter in this sample dataset — try clearing the type filter.");
+      renderEmpty("No hospitals match that filter in this sample dataset, try clearing the type filter.");
       return;
     }
 

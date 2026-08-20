@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riyadh Hospital &amp; Doctor Finder — nearest ER, real doctor profiles</title>
-<meta name="description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty — qualifications, training background and languages, sourced from hospitals' own directories.">
+<title>Riyadh School Finder — ranked by your real commute</title>
+<meta name="description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
 
-<!-- Open Graph / LinkedIn preview. IMPORTANT: replace REPLACE_WITH_YOUR_URL below
+<!-- Open Graph / LinkedIn preview. IMPORTANT: replace https://hamzamanagerajeek.github.io/riyadh-school-finder below
      with your live GitHub Pages URL once deployed, e.g.
-     https://yourusername.github.io/riyadh-hospital-doctor-finder -->
+     https://yourusername.github.io/riyadh-school-finder -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Riyadh Hospital & Doctor Finder">
-<meta property="og:description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty — qualifications, training background and languages.">
-<meta property="og:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
-<meta property="og:url" content="REPLACE_WITH_YOUR_URL/">
+<meta property="og:title" content="Riyadh School Finder — ranked by your real commute">
+<meta property="og:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time — not just the district.">
+<meta property="og:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/og-image.png">
+<meta property="og:url" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Riyadh Hospital & Doctor Finder">
-<meta name="twitter:description" content="Find the nearest Riyadh hospital by real drive time, or search real doctor profiles by specialty.">
-<meta name="twitter:image" content="REPLACE_WITH_YOUR_URL/og-image.png">
+<meta name="twitter:title" content="Riyadh School Finder — ranked by your real commute">
+<meta name="twitter:description" content="Set your home and work location, filter by budget and curriculum, and see Riyadh schools ranked by real drive time.">
+<meta name="twitter:image" content="https://hamzamanagerajeek.github.io/riyadh-school-finder/og-image.png">
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -915,6 +915,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: 4px; }
 
 .leaflet-div-icon.home-icon { background: var(--ink); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
 .leaflet-div-icon.work-icon { background: #2f6fed; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.leaflet-div-icon.school-icon {
+  background: var(--accent); color: #fff; border: 3px solid #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
 .footer-note { padding: 10px 20px; font-size: 11.5px; color: var(--muted); text-align: center; border-top: 1px solid var(--border); background: var(--card); }
 .footer-note a { color: var(--accent-dark); text-decoration: none; font-weight: 600; }
 .footer-note a:hover { text-decoration: underline; }
@@ -929,188 +934,91 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: 4px; }
   border-bottom: 1px solid var(--ok-border);
 }
 
-/* ---------- Emergency bar (always visible) ---------- */
-#emergencyBar {
-  background: #b3261e;
-  color: #fff;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 9px 14px;
-  letter-spacing: 0.01em;
-}
-#emergencyBar strong { font-weight: 900; }
-#emergencyBar a { color: #fff; text-decoration: underline; }
-
-/* ---------- Tabs ---------- */
-.tab-nav {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 20px;
-  background: #f5f2ec;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 4px;
-}
-.tab-btn {
-  flex: 1;
-  background: transparent;
-  color: var(--ink-soft);
-  padding: 9px 10px;
-  border-radius: 9px;
-  font-size: 13.5px;
-  font-weight: 700;
-}
-.tab-btn.active { background: var(--ink); color: #fff; }
-
-.hospital-phone { font-size: 12px; color: var(--muted); margin-top: 6px; }
-.hospital-phone a { color: var(--accent-dark); font-weight: 700; text-decoration: none; }
-.hospital-phone a:hover { text-decoration: underline; }
-
-.leaflet-div-icon.hospital-icon {
-  background: #b3261e; color: #fff; border: 3px solid #fff; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;
-  box-shadow: 0 2px 8px rgba(0,0,0,.35);
-}
-
-/* ---------- Doctor cards ---------- */
-.doctor-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  margin-bottom: 12px;
-  box-shadow: var(--shadow-sm);
-}
-.doctor-name { font-weight: 750; font-size: 15.5px; color: var(--ink); letter-spacing: -0.005em; }
-.doctor-specialty { font-size: 12.5px; color: var(--accent-dark); font-weight: 700; margin-top: 2px; }
-.doctor-hospital { font-size: 12.5px; color: var(--muted); margin-top: 4px; font-weight: 500; }
-.doctor-quals {
-  margin: 10px 0 0;
-  padding-left: 18px;
-  font-size: 12px;
-  color: var(--ink-soft);
-  line-height: 1.6;
-}
-.doctor-quals li { margin-bottom: 1px; }
-.doctor-langs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-.lang-pill {
-  background: #eef4ff; color: #2f6fed; font-size: 10.5px; font-weight: 700;
-  padding: 3px 9px; border-radius: 999px;
-}
-.doctor-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-.btn-secondary {
-  background: #fff; color: var(--ink); border: 1.5px solid var(--border-strong);
-  padding: 8px 14px; font-size: 12.5px; font-weight: 700; border-radius: 999px;
-  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
-}
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent-dark); }
-.specialty-select-wrap { position: relative; }
-
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
     <span class="eyebrow">🇸🇦 Riyadh, Saudi Arabia</span>
-    <h1>Find a hospital, or the <em>right doctor</em> — fast.</h1>
-    <p class="sub">See real Riyadh hospitals ranked by drive time, or search real doctor profiles by specialty — with their actual training background and languages, not guesswork.</p>
+    <h1>Stop guessing which school<br>is actually <em>close enough.</em></h1>
+    <p class="sub">Set your home and work, and see schools ranked by real drive time — not just which district they're in.</p>
     <div class="hero-stats">
       <span>🚗 Real drive times</span>
-      <span>🩺 Real doctor profiles</span>
       <span>🗺️ Interactive map</span>
+      <span>🎓 35+ real schools</span>
       <span>💸 Free, no signup</span>
     </div>
   </header>
-  <div id="emergencyBar">🚨 Medical emergency? Call <strong>997</strong> (ambulance) or <strong>911</strong> (unified emergency) — free, 24/7</div>
   <div id="configBanner"></div>
   <div class="layout">
     <div class="panel">
-      <div class="tab-nav">
-        <button type="button" class="tab-btn active" data-tab="hospitals">🏥 Hospitals</button>
-        <button type="button" class="tab-btn" data-tab="doctors">🩺 Find a Doctor</button>
+      <div class="field">
+        <label>Where do you live?</label>
+        <select id="homeSelect">
+          <option value="">Choose a location…</option>
+          <option value="custom">Type a custom address…</option>
+        </select>
+        <div class="row" id="homeCustomRow" style="display:none; margin-top:8px;">
+          <input type="text" id="homeCustom" placeholder="e.g. Al Narjis, Riyadh">
+          <button class="btn-locate" id="homeLocateBtn">Locate</button>
+        </div>
+        <div class="hint" id="homeGeoStatus"></div>
       </div>
 
-      <div id="locationFields">
-        <div class="field">
-          <label>What's your location?</label>
-          <select id="locationSelect">
-            <option value="">Choose a location…</option>
-            <option value="custom">Type a custom address…</option>
-          </select>
-          <div class="row" id="locationCustomRow" style="display:none; margin-top:8px;">
-            <input type="text" id="locationCustom" placeholder="e.g. Al Narjis, Riyadh">
-            <button class="btn-locate" id="locationLocateBtn">Locate</button>
-          </div>
-          <div class="hint" id="locationGeoStatus"></div>
+      <div class="field">
+        <label>Where do you work? (optional)</label>
+        <select id="workSelect">
+          <option value="skip">Skip — not relevant / remote</option>
+          <option value="custom">Type a custom address…</option>
+        </select>
+        <div class="row" id="workCustomRow" style="display:none; margin-top:8px;">
+          <input type="text" id="workCustom" placeholder="e.g. KAFD, Riyadh">
+          <button class="btn-locate" id="workLocateBtn">Locate</button>
         </div>
+        <div class="hint" id="workGeoStatus"></div>
       </div>
 
-      <div id="hospitalsPanel" class="tab-panel">
-        <div class="field">
-          <label>Hospital type (leave unselected for any)</label>
-          <div class="chips" id="hospitalTypeChips"></div>
-        </div>
-
-        <button class="btn-primary" id="findHospitalsBtn">Find nearby hospitals →</button>
-
-        <div class="disclaimer">
-          <strong>About this module</strong>
-          A hand-curated sample of 8 major Riyadh hospitals with 24/7 emergency departments (a mix
-          of government and private), not a live bed-availability feed. Coordinates are approximate
-          campus-level estimates. Phone numbers shown are each hospital's general switchboard for
-          non-urgent calls — <strong>not</strong> an emergency line. In a real emergency, always call
-          997 (ambulance) or 911 (unified emergency) first; dispatchers route you to the right
-          facility faster than picking one yourself.
-        </div>
-
-        <div class="disclaimer" style="margin-top:12px;">
-          <strong>Emergency numbers</strong>
-          <div id="emergencyList" style="margin-top:6px;"></div>
-        </div>
+      <div class="field" id="weightField" style="display:none;">
+        <label>What matters more? <span class="slider-value" id="weightLabel"></span></label>
+        <input type="range" id="weightSlider" min="0" max="100" value="50" step="10">
       </div>
 
-      <div id="doctorsPanel" class="tab-panel" style="display:none;">
-        <div class="field specialty-select-wrap">
-          <label>Specialty</label>
-          <select id="specialtySelect">
-            <option value="">Choose a specialty…</option>
-          </select>
-          <div class="hint">Set your location above to sort results by drive time from you.</div>
-        </div>
-
-        <div class="disclaimer">
-          <strong>About this module</strong>
-          A hand-curated sample of real doctors pulled from hospitals' own public "find a doctor"
-          pages — currently covers Saudi German Hospital Riyadh, Mouwasat Hospital Riyadh and Dallah
-          Hospital, with the remaining hospitals to be added as their directories become available.
-          Qualifications, training background and languages are copied from each doctor's own
-          published profile where shown — some source listings only exposed name, specialty and
-          hospital. This list does <strong>not</strong> show or guess anyone's nationality or
-          ethnicity — that isn't published by hospitals or by Saudi Arabia's largest doctor-booking
-          platform, and guessing it from a name would be unreliable and unfair to real people. Medical
-          school (shown under each doctor) is often a useful hint if language/cultural fit matters to
-          you. This is not a booking system — "View profile &amp; book" opens the hospital's own
-          official page.
-        </div>
+      <div class="field">
+        <label>Max budget <span class="slider-value" id="budgetValue"></span></label>
+        <input type="range" id="budgetSlider" min="10000" max="80000" step="1000" value="45000">
       </div>
 
+      <div class="field">
+        <label>Curriculum (leave all unselected for any)</label>
+        <div class="chips" id="curriculumChips"></div>
+      </div>
+
+      <button class="btn-primary" id="findBtn">Find matching schools →</button>
       <div class="hint" id="status" style="margin-top:8px; color:var(--accent-dark); font-weight:600;"></div>
+
+      <div class="disclaimer">
+        <strong>About this tool</strong>
+        Runs on a hand-curated sample of ~35 real Riyadh private/international schools pulled from
+        public school directories (not a live or complete feed), with district-level coordinates
+        that are approximate, not verified per-building geocodes. Drive times come from
+        OpenRouteService in your browser; if that's unreachable, times shown are estimates based on
+        straight-line distance instead. Fees and details may be out of date — always confirm with
+        the school directly.
+      </div>
     </div>
 
     <div class="content">
       <div id="map"></div>
       <div class="results">
-        <div id="resultsList" class="results-empty">Set your location and hit "Find nearby hospitals" to see ranked results here.</div>
+        <div id="resultsList" class="results-empty">Pick a home location and hit "Find matching schools" to see ranked results here.</div>
       </div>
     </div>
   </div>
   <div class="footer-note">
     Map data &copy; OpenStreetMap contributors · Routing via
     <a href="https://openrouteservice.org" target="_blank" rel="noopener">openrouteservice.org</a>
-    · Doctor profiles sourced from hospitals' own public directories · Spotted an error or want your
-    hospital/clinic added?
-    <a href="mailto:hamza@ajeeknow.com?subject=Riyadh%20Hospital%20%26%20Doctor%20Finder%20feedback">Email us</a>
+    · Spotted a wrong listing or want your school added?
+    <a href="mailto:hamza@ajeeknow.com?subject=Riyadh%20School%20Finder%20feedback">Email us</a>
   </div>
 </div>
 
@@ -1123,9 +1031,53 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: 4px; }
 //# sourceMappingURL=leaflet.js.map
 </script>
 <script>
+// Hand-curated sample of real Riyadh private/international schools.
+// Sourced from public school directories (YaSchools, edarabia) — Aug 2026.
+// District coordinates are APPROXIMATE (district-center estimates), not
+// verified per-building geocodes. Fees are "starting from" figures where
+// available and may be out of date. For prototype/demo purposes only.
+const SCHOOLS = [
+  { name: "Dar Assalam National Schools", district: "Ar Rahmaniyyah", lat: 24.8047, lon: 46.6118, curricula: ["National"], fee: 19000 },
+  { name: "Dar Assalam National Schools (Intl. Programme)", district: "Ar Rahmaniyyah", lat: 24.8050, lon: 46.6125, curricula: ["International"], fee: 23500 },
+  { name: "Community Vision International Schools", district: "Al Mughrizat", lat: 24.6880, lon: 46.7220, curricula: ["International"], fee: 25000 },
+  { name: "Asrari National Schools", district: "Al Mughrizat", lat: 24.6885, lon: 46.7235, curricula: ["National"], fee: 26000 },
+  { name: "Modern Global International Schools", district: "An Nakheel", lat: 24.7460, lon: 46.6410, curricula: ["International"], fee: 32000 },
+  { name: "Adwaa Al Hedaya National Schools", district: "Al Ta'awon", lat: 24.7856, lon: 46.6294, curricula: ["International"], fee: 20000 },
+  { name: "Ecole Internationale Dina - EIDAS", district: "Al Malaz", lat: 24.6602, lon: 46.7351, curricula: ["International", "French"], fee: 13425 },
+  { name: "Almanner National School", district: "Al Yarmuk", lat: 24.7580, lon: 46.7530, curricula: ["National"], fee: 12000 },
+  { name: "Dar Alqalm National School", district: "As Salam", lat: 24.6890, lon: 46.7890, curricula: ["National"], fee: 11000 },
+  { name: "Eagle International Schools", district: "Al Izdihar", lat: 24.7853, lon: 46.7443, curricula: ["American"], fee: 25000 },
+  { name: "Al Forsan International Schools", district: "Al Izdihar", lat: 24.7860, lon: 46.7455, curricula: ["American"], fee: 27500 },
+  { name: "Kids Time Kindergarten", district: "Al Mohammadiyyah", lat: 24.7215, lon: 46.6520, curricula: ["Nursery/KG"], fee: 27945 },
+  { name: "Reigate Grammar School Riyadh", district: "Qurtubah", lat: 24.7735, lon: 46.7220, curricula: ["British", "IGCSE"], fee: 55150 },
+  { name: "Aldenham Prep Riyadh", district: "As Sahafah", lat: 24.7936, lon: 46.6389, curricula: ["British", "IGCSE"], fee: 58250 },
+  { name: "Kings College Riyadh", district: "Ad Diriyah", lat: 24.7371, lon: 46.5753, curricula: ["British"], fee: 65980 },
+  { name: "One World International School", district: "Al Muruj", lat: 24.7423, lon: 46.6635, curricula: ["American"], fee: 46500 },
+  { name: "Downe House Riyadh", district: "Al Aqiq", lat: 24.7789, lon: 46.6104, curricula: ["British", "IGCSE"], fee: 76188 },
+  { name: "OWIS Al Jazeera", district: "Al Jazeera", lat: 24.6160, lon: 46.6730, curricula: ["American"], fee: 35000 },
+  { name: "Al-Alameen International School", district: "Az Zahra", lat: 24.5930, lon: 46.7280, curricula: ["British", "IGCSE", "Montessori", "Islamic"], fee: 30000 },
+  { name: "Yara International School", district: "Dheera", lat: 24.6280, lon: 46.7550, curricula: ["IGCSE", "CBSE"], fee: 28000 },
+  { name: "Al Noor International School", district: "Al Wisham", lat: 24.6707, lon: 46.6963, curricula: ["American"], fee: 13500 },
+  { name: "Nour Al Maaref International School", district: "As Sulimaniyah", lat: 24.6934, lon: 46.7159, curricula: ["American"], fee: 22000 },
+  { name: "Horizon International School", district: "Al Wurud", lat: 24.7168, lon: 46.6799, curricula: ["International"], fee: 24000 },
+  { name: "Al Rowad International Schools", district: "Nuzha", lat: 24.7295, lon: 46.7241, curricula: ["British", "IGCSE", "American"], fee: 25300 },
+  { name: "Delta Schools", district: "Al Muruj", lat: 24.7415, lon: 46.6650, curricula: ["British", "IGCSE", "American"], fee: 23500 },
+  { name: "Education International Schools", district: "As Sulimaniyah", lat: 24.6940, lon: 46.7165, curricula: ["American"], fee: 24500 },
+  { name: "JAD International Schools", district: "Al Waha", lat: 24.8090, lon: 46.7040, curricula: ["British", "American"], fee: 23000 },
+  { name: "Khaled International Schools (KiS)", district: "Nahda", lat: 24.6660, lon: 46.7830, curricula: ["American"], fee: 21500 },
+  { name: "Riyadh Schools", district: "An Namudhajiyah", lat: 24.6425, lon: 46.7215, curricula: ["Arabic", "National"], fee: 37250 },
+  { name: "Al-Amjad International School", district: "Al Hamra", lat: 24.6560, lon: 46.6890, curricula: ["American"], fee: 26000 },
+  { name: "Dome International Schools", district: "Al Masief", lat: 24.8215, lon: 46.6465, curricula: ["British", "IGCSE", "American"], fee: 25500 },
+  { name: "Qimam El-Hayat International Schools", district: "Al Futah", lat: 24.6115, lon: 46.6835, curricula: ["Arabic"], fee: 13750 },
+  { name: "SEK International School Riyadh", district: "Ar Rabi", lat: 24.7846, lon: 46.6636, curricula: ["IB"], fee: 52500 },
+  { name: "British International School Riyadh", district: "Al Olaya (approx.)", lat: 24.7020, lon: 46.6720, curricula: ["British"], fee: 75159 },
+  { name: "Manarat Al Riyadh School", district: "Al Malaz (approx.)", lat: 24.6660, lon: 46.7300, curricula: ["National"], fee: 33100 },
+];
+
 // Riyadh landmarks/districts for the quick-select "home"/"work" picker, so
-// the tool works instantly with zero network calls. Coordinates are
-// district-center estimates from public map data — Aug 2026.
+// the demo works instantly with zero network calls. Includes every district
+// used in the SCHOOLS list above (so every school is reachable as a home/work
+// point too) plus a few extra well-known landmarks. Alphabetical.
 const LANDMARKS = [
   { name: "Ad Diriyah / King Salman Park area", lat: 24.7371, lon: 46.5753 },
   { name: "Al Aqiq", lat: 24.7789, lon: 46.6104 },
@@ -1168,142 +1120,15 @@ const LANDMARKS = [
 
 </script>
 <script>
-// Hand-curated sample of major Riyadh hospitals with 24/7 emergency
-// departments — a mix of Ministry of Health / university-affiliated
-// government hospitals and large private hospital groups. Sourced from each
-// hospital's own site plus public map/directory listings (OpenStreetMap-
-// derived building locations, hospital contact pages) — Aug 2026.
-// Coordinates are approximate (campus/building-level estimates from public
-// map data), not verified per-entrance geocodes. This is a small curated
-// sample, not a live bed-availability or ER-wait-time feed, and access
-// rules (walk-in vs. referral, insurance networks) vary by hospital and
-// aren't captured here — always confirm with the hospital directly for
-// anything non-urgent.
-//
-// "phone" is each hospital's general switchboard/reception line, for
-// non-urgent calls only (appointments, visiting hours, directions, etc).
-// It is NOT an emergency dispatch number — see EMERGENCY_NUMBERS below.
-//
-// "slug" links a hospital to entries in DOCTORS (doctors_data.js).
-const HOSPITALS = [
-  { slug: "ksmc", name: "King Saud Medical City", district: "Ash Shumaisi", lat: 24.6278, lon: 46.6904, type: "Government", note: "Level 1 trauma center", phone: "011 435 5555" },
-  { slug: "kfmc", name: "King Fahad Medical City", district: "Khurais Road / As Sulimaniyah", lat: 24.6876, lon: 46.7053, type: "Government", note: "Tertiary care", phone: "800 127 7000" },
-  { slug: "kkuh", name: "King Khalid University Hospital (KKUH)", district: "Al Jamiah (KSU Medical City)", lat: 24.7114, lon: 46.6214, type: "Government", note: "University hospital", phone: "011 469 0000" },
-  { slug: "kfshrc", name: "King Faisal Specialist Hospital & Research Centre", district: "Al Mathar Ash Shamali", lat: 24.7130, lon: 46.7150, type: "Government", note: "Specialist referral hospital", phone: "011 442 7272" },
-  { slug: "hmg-takhassusi", name: "Dr. Sulaiman Al Habib Hospital — Takhassusi", district: "Ar Rahmaniyyah", lat: 24.8047, lon: 46.6118, type: "Private", note: "HMG group", phone: "920 021 100" },
-  { slug: "sgh-riyadh", name: "Saudi German Hospital Riyadh", district: "Northern Riyadh (near Al-Shabab Club)", lat: 24.8009, lon: 46.6284, type: "Private", note: "", phone: "011 220 2088" },
-  { slug: "mouwasat-riyadh", name: "Mouwasat Hospital Riyadh", district: "Ghirnatah (Granada)", lat: 24.7874, lon: 46.7327, type: "Private", note: "", phone: "011 218 8000" },
-  { slug: "dallah", name: "Dallah Hospital", district: "An Nakheel", lat: 24.7460, lon: 46.6410, type: "Private", note: "", phone: "011 288 9999" },
-];
-
-// Cross-checked against two independent sources (a government-linked
-// consumer guide and a major Saudi telecom carrier's official page), Aug
-// 2026. If in doubt, 911 and 997 are the two safest bets nationwide.
-const EMERGENCY_NUMBERS = [
-  { number: "997", label: "Ambulance (Saudi Red Crescent Authority)" },
-  { number: "911", label: "Unified emergency number — Riyadh, Makkah, Madinah & Eastern Province" },
-  { number: "998", label: "Civil Defense (fire/rescue)" },
-  { number: "999", label: "Police" },
-];
-
-</script>
-<script>
-// Hand-curated sample of real doctors, pulled from hospitals' own public
-// "find a doctor" pages (and, for Dallah, from Okadoc's booking listings for
-// Dallah Hospital specifically) — Aug 2026. Covers 3 of the 8 hospitals
-// above (Saudi German Hospital Riyadh, Mouwasat Hospital Riyadh, Dallah
-// Hospital); the 4 government hospitals and Dr. Sulaiman Al Habib don't
-// publish an individually-browsable public doctor directory that could be
-// reliably pulled from, so they're not represented here yet.
-//
-// IMPORTANT — what this is and isn't:
-// - "qualifications" and "trainedAt" are copied from each doctor's own
-//   published bio (medical school, board certifications, fellowships) where
-//   the source page exposed them — some source pages only show name,
-//   specialty and hospital, so qualifications is empty for those entries
-//   rather than guessed.
-// - Medical school / board origin (e.g. Cairo University, University of
-//   Khartoum, Jordanian Board) is often a reasonable hint about a doctor's
-//   background if language/cultural fit matters to you — but this list does
-//   NOT state or guess anyone's nationality or ethnicity. That data isn't
-//   published by hospitals or by Saudi Arabia's largest doctor-booking
-//   platform, and guessing it from a name would be unreliable and unfair to
-//   real, named professionals.
-// - "languages" is copied verbatim from the doctor's own profile page, where
-//   shown.
-// - This is NOT a booking system. "sourceUrl" links to the hospital's (or
-//   Okadoc's) own listing, which is where an actual appointment gets booked.
-//   A few Mouwasat entries link to the hospital's doctor-search page rather
-//   than an individual profile URL, because that's the real, working page a
-//   visitor lands on for that doctor today — better than a guessed URL.
-const DOCTORS = [
-  // ---- Saudi German Hospital Riyadh (sgh-riyadh) ----
-  { name: "Dr. Ahmed Abdulaziz Ajeebi", specialty: "Anesthesia & Pain Medicine", hospitalSlug: "sgh-riyadh", qualifications: ["Saudi Board of Anesthesia", "Saudi Fellowship of Pain Medicine", "Fellowship in Pain Medicine, King Fahad Medical City"], languages: ["Arabic", "English"], experienceYears: 8, sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-ahmed-abdulaziz-ajeebi" },
-  { name: "Dr. Abdulelah Bin Shihah", specialty: "Family Medicine & Pain Medicine", hospitalSlug: "sgh-riyadh", qualifications: ["Canadian Fellowship in Pain Medicine — McGill University", "Saudi Board of Family Medicine — King Faisal Specialist Hospital & Research Center"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-abdulelah-bin-shihah" },
-  { name: "Dr. Waleed Ali Aljohani", specialty: "Gastroenterology", hospitalSlug: "sgh-riyadh", qualifications: ["Canadian & American Board Certified, Internal Medicine", "Board Certified, Gastroenterology & Hepatology", "American Board Certified, Obesity Medicine"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-waleed-ali-aljohani" },
-  { name: "Dr. Lemia Elhassan", specialty: "Obstetrics & Gynecology", hospitalSlug: "sgh-riyadh", qualifications: ["MBBS, Umdurman Islamic University, Sudan", "Saudi Board Fellowship in Obstetrics & Gynecology", "Fellowship in Cosmetic Gynecology"], languages: ["Arabic", "English"], experienceYears: 20, sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-lemia-elhassan" },
-  { name: "Dr. Ibrahim Hamad Altraif", specialty: "Gastroenterology", hospitalSlug: "sgh-riyadh", qualifications: ["MBBS, King Faisal University, Dammam", "Fellowship of GI, University of Alberta, Canada", "Fellowship in Hepatology & Liver Transplantation, University of Toronto, Canada", "Former Head of Hepatology, King Abdulaziz Medical City, National Guard, Riyadh"], languages: ["Arabic", "English"], experienceYears: 30, sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-ibrahim-hamad-altraif" },
-  { name: "Dr. Sarah Husam Aljefri", specialty: "Ophthalmology", hospitalSlug: "sgh-riyadh", qualifications: ["Assistant Professor, Imam Mohammad Ibn Saud Islamic University", "Fellowship in Medical Retina & Uveitis", "Saudi Board of Ophthalmology", "Fellowship, King Khaled Eye Specialist Hospital"], languages: [], experienceYears: 6, sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-sarah-husam-aljefri" },
-  { name: "Remaz Mohammed Alamri", specialty: "Clinical Nutrition", hospitalSlug: "sgh-riyadh", qualifications: ["BSc Clinical Nutrition, Princess Nourah Bint Abdulrahman University", "Saudi Clinical Nutrition Licensing Examination (SCNLE)"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/remaz-mohammed-alamri" },
-  { name: "Dr. Alanoud Alshami", specialty: "Pediatrics", hospitalSlug: "sgh-riyadh", qualifications: ["MBBS, King Saud University", "Saudi Board & Arab Board in Pediatrics", "Pediatric Nephrology & Kidney Transplant Fellowship, UBC, Vancouver, Canada"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-alanoud-alshami" },
-  { name: "Dr. Bader Ahmed Aldahash", specialty: "Gastroenterology", hospitalSlug: "sgh-riyadh", qualifications: ["Saudi Board of Gastroenterology", "Saudi Board of Internal Medicine", "European Board of Gastroenterology", "Trained at King Faisal Specialist Hospital & Research Centre"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-bader-ahmed-aldahash" },
-  { name: "Dr. Kholoud Ahmed Helmy", specialty: "Dermatology", hospitalSlug: "sgh-riyadh", qualifications: ["MBBS, Kasr Al-Ainy Faculty of Medicine, Cairo University", "MSc Dermatology, Cairo University", "MD Dermatology, Cosmetology & Laser, Cairo University"], languages: [], experienceYears: 13, sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-kholoud-ahmed-helmy" },
-  { name: "Lama Mohammed Alfaqir", specialty: "Audiology", hospitalSlug: "sgh-riyadh", qualifications: [], languages: [], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/lama-mohammed-alfaqir" },
-  { name: "Dr. Waleed Abdullah Alhabeeb", specialty: "Cardiology", hospitalSlug: "sgh-riyadh", qualifications: ["Arab Board of Internal Medicine", "Saudi Board of Adult Cardiology", "Harvard Fellowship in Heart Failure", "Affiliated with King Faisal Specialist Hospital & King Saud University"], languages: ["Arabic", "English"], experienceYears: 25, sourceUrl: "https://saudigermanhealth.com/en/doctor/dr-waleed-abdullah-alhabeeb" },
-  { name: "Dr. Rawan Abuelgasim Ali Mohamed", specialty: "General Practice", hospitalSlug: "sgh-riyadh", qualifications: ["Bachelor of Medicine & Surgery, University of Khartoum"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-rawan-abuelgasim-ali-mohamed" },
-  { name: "Dr. Abdulkreem Abdulaziz Alnasser", specialty: "Gastroenterology", hospitalSlug: "sgh-riyadh", qualifications: ["Saudi Board of Gastroenterology", "European Specialty Examination in Gastroenterology & Hepatology", "Member, American & European Gastroenterology Associations"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-abdulkreem-abdulaziz-alnasser" },
-  { name: "Dr. Leina Elhadi Mohamed", specialty: "Dermatology", hospitalSlug: "sgh-riyadh", qualifications: ["Bachelor of Medicine & Surgery, University of Gezira, Sudan", "Clinical MD in Dermatology & Venereology, Sudan Medical Specialization Board"], languages: ["Arabic", "English"], sourceUrl: "https://riyadh.saudigermanhealth.com/en/doctor/dr-leina-elhadi-mohamed" },
-
-  // ---- Mouwasat Hospital Riyadh (mouwasat-riyadh) ----
-  { name: "Dr. Mohammad Deeb Tawfiq Aldeeb", specialty: "Pediatrics", hospitalSlug: "mouwasat-riyadh", qualifications: ["Jordanian Board certification", "Member, Jordanian Pediatric Association"], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/mohammad-aldeeb" },
-  { name: "Dr. Yahya Ahmed Fageeh", specialty: "ENT", hospitalSlug: "mouwasat-riyadh", qualifications: ["MBBS", "Saudi Board & KSU Fellowship in Otorhinolaryngology, Head & Neck Surgery", "European Board in Otorhinolaryngology, Head & Neck Surgery", "UMMC Fellowship in Rhinology & Skull Base Surgery"], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/dr-yahya-fageeh" },
-  { name: "Mohamed Khater", specialty: "Pediatrics", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Noha Musa Azab", specialty: "Pediatrics", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Karima Gaied", specialty: "ENT", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Rawabi Saleh Aljumaiah", specialty: "Internal Medicine", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Karem Taha Ibrahim", specialty: "Dermatology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Hend Osama Tarabay", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Hela Mesrati", specialty: "Internal Medicine", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Salah eldin Maged Aly Elhefnawy", specialty: "Neurosurgery", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Faisal Abdulhamid O Farrash", specialty: "Neurosurgery", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Abdullah Fayez A Alasmari", specialty: "Nephrology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Ali Mahmoud A Albalawi", specialty: "Intervention Radiology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Sarah Hazem A Almasri", specialty: "Psychiatry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Khaldoun Shwai", specialty: "Cardiology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Asim Khader Alqurashi", specialty: "Endocrinology & Diabetes", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Suzan Mohamed Aly Omar Mousa", specialty: "Pediatrics", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Azza Metwaly", specialty: "Ophthalmology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Hala Hussein Mansour", specialty: "Pediatrics", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Mohamad Wael Arja", specialty: "Pulmonology", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Mohammad Kamel Ali", specialty: "ENT", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Abdullah Essam A Almanea", specialty: "Internal Medicine", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Atef Bakr Khedr", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Afnan Ali H Bahkali", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Abeer Atwan G Alotaibi", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Alwateen Issa I Almubrad", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Alaa Sultan M Alhassan", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-  { name: "Randa Elsayed", specialty: "Dentistry", hospitalSlug: "mouwasat-riyadh", qualifications: [], languages: [], sourceUrl: "https://www.mouwasat.com/en/doctors/search/hospitals/mouwasat-hospital-riyadh" },
-
-  // ---- Dallah Hospital (dallah) — via Okadoc's Dallah listings ----
-  { name: "Dr. Ibrahim Alruzug", specialty: "Gastroenterology", hospitalSlug: "dallah", qualifications: [], languages: [], sourceUrl: "https://www.okadoc.com/en-sa/doctor/internal-medicine/riyadh/ibrahim-alruzug" },
-  { name: "Dr. Ahmed Alfaqih", specialty: "Cardiology", hospitalSlug: "dallah", qualifications: [], languages: [], experienceYears: 24, sourceUrl: "https://www.okadoc.com/en-sa/doctor/cardiology/riyadh/ahmed-alfaqih" },
-  { name: "Dr. Fatina Nabulsi", specialty: "Pediatrics", hospitalSlug: "dallah", qualifications: [], languages: [], sourceUrl: "https://www.okadoc.com/en-sa/doctor/paediatrics/riyadh/fatina-nabulsi" },
-  { name: "Dr. Ageel Fageehi", specialty: "Orthopedics", hospitalSlug: "dallah", qualifications: [], languages: [], sourceUrl: "https://www.okadoc.com/en-sa/doctor/orthopaedics-bones-joints-ligaments-tendons-and-muscles/riyadh/ageel-fageehi" },
-  { name: "Dr. Yassin Ibrahim", specialty: "Dermatology", hospitalSlug: "dallah", qualifications: [], languages: [], experienceYears: 17, sourceUrl: "https://www.okadoc.com/en-sa/doctor/dermatology-skin/riyadh/yassin-ibrahim" },
-  { name: "Dr. Abdulaziz Ahmed Alatmi", specialty: "Nephrology", hospitalSlug: "dallah", qualifications: [], languages: [], sourceUrl: "https://www.okadoc.com/en-sa/doctor/nephrology-kidney/riyadh/abdulaziz-ahmed-alatmi" },
-  { name: "Dr. Abdullah Alkharashi", specialty: "Ophthalmology", hospitalSlug: "dallah", qualifications: [], languages: [], experienceYears: 18, sourceUrl: "https://www.okadoc.com/en-sa/doctor/ophthalmology/riyadh/abdullah-alkharashi" },
-  { name: "Dr. Hilali Hassan Hilali", specialty: "Endocrinology & Diabetes", hospitalSlug: "dallah", qualifications: [], languages: [], experienceYears: 32, sourceUrl: "https://www.okadoc.com/en-sa/doctor/diabetes-endocrinology/riyadh/hilali-hassan-hilali" },
-];
-
-</script>
-<script>
 (function () {
   "use strict";
 
   // ---------- routing/geocoding config ----------
+  // Get a free key at https://openrouteservice.org/dev/#/signup (no credit
+  // card required, ~5 min). Paste it below. Until you do, the tool still
+  // works fully using estimated (straight-line-based) commute times.
   const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImJiYWFiZjc2ZDU0NTQxNzhhYjMxMzc4NjcyM2UzOTc5IiwiaCI6Im11cm11cjY0In0=";
   const ORS_ENABLED = ORS_API_KEY && ORS_API_KEY.indexOf("PASTE_YOUR") !== 0;
-  const ORS_BASE = "https://api.heigit.org/openrouteservice";
 
   // ---------- helpers ----------
   function haversineKm(lat1, lon1, lat2, lon2) {
@@ -1315,6 +1140,7 @@ const DOCTORS = [
       Math.sin(dLon / 2) ** 2;
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
+  // Rough fallback: assume ~25 km/h average with Riyadh traffic/signals.
   function estMinutesFromKm(km) { return (km / 25) * 60; }
 
   function fetchWithTimeout(url, opts, ms) {
@@ -1324,6 +1150,12 @@ const DOCTORS = [
       .finally(() => clearTimeout(id));
   }
 
+  // As of Aug 2026, openrouteservice is migrating off api.openrouteservice.org
+  // (shuts down 2026-08-24) onto api.heigit.org/openrouteservice/... — same
+  // key, new base URL. Using the new base URL directly so this doesn't break
+  // right after launch.
+  const ORS_BASE = "https://api.heigit.org/openrouteservice";
+
   async function logIfError(res, label) {
     if (!res.ok) {
       let body = "";
@@ -1332,6 +1164,13 @@ const DOCTORS = [
     }
   }
 
+  // Geocoding (turning a typed address into coordinates) uses OpenStreetMap's
+  // Nominatim instead of openrouteservice — HeiGIT's geocode/search endpoint
+  // doesn't send CORS headers at all, which blocks it from browser JS
+  // entirely (confirmed via a live CORS preflight failure). Nominatim does
+  // support CORS on normal responses; it only omits those headers on its own
+  // 403/429/502 rate-limit/capacity errors, which our try/catch below already
+  // handles by falling back to the quick-select estimate.
   async function geocode(query) {
     const url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" +
       encodeURIComponent(query + ", Riyadh, Saudi Arabia");
@@ -1342,6 +1181,11 @@ const DOCTORS = [
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), label: data[0].display_name };
   }
 
+  // Bulk drive-time lookup: ONE request gets the origin's drive time to every
+  // destination at once, via the Matrix API, instead of one Directions call
+  // per school. A 12-school search with a home+work origin used to fire up
+  // to 24 requests; this fires at most 2 — important since the API key is
+  // shared across every visitor to a public page, not just one user.
   async function matrixMinutes(originLat, originLon, destinations) {
     if (!ORS_ENABLED) throw new Error("routing not configured");
     const locations = [[originLon, originLat]].concat(destinations.map((d) => [d.lon, d.lat]));
@@ -1361,73 +1205,59 @@ const DOCTORS = [
     const data = await res.json();
     const durations = data && data.durations && data.durations[0];
     if (!durations) throw new Error("no matrix durations");
-    return durations.map((d) => (d == null ? null : d / 60));
-  }
-
-  function hospitalBySlug(slug) { return HOSPITALS.find((h) => h.slug === slug); }
-
-  // Renders a "X min from you" line that correctly distinguishes three
-  // states: not yet attempted live routing (estimate only, no spinner —
-  // either ORS is disabled or we simply haven't tried yet), currently
-  // fetching live routing (spinner + "estimating…"), and finished trying but
-  // it failed (falls back to the estimate, spinner gone, no more claiming to
-  // be "estimating"). Previously the label stayed on "(estimating…)" forever
-  // once a live lookup failed, which looked stuck/broken.
-  function commuteLine(item, label) {
-    if (item._minReal != null) return `${Math.round(item._minReal)} min drive ${label}`;
-    if (item._attempted) return `~${Math.round(item._min)} min ${label} <span class="muted">(estimated — live routing unavailable)</span>`;
-    if (ORS_ENABLED) return `<span class="spinner-inline"></span>~${Math.round(item._min)} min ${label} <span class="muted">(estimating…)</span>`;
-    return `~${Math.round(item._min)} min ${label} <span class="muted">(estimated)</span>`;
+    return durations.map((d) => (d == null ? null : d / 60)); // seconds -> minutes, same order as destinations
   }
 
   // ---------- state ----------
-  let map, locationMarker;
-  const hospitalMarkers = {};
-  const activeHospitalTypes = new Set();
-  let activeTab = "hospitals";
-  let geocodedPoint = null;
+  let map, homeMarker, workMarker;
+  const schoolMarkers = {};
+  const activeCurricula = new Set();
+  let allCurricula = [];
 
   // ---------- init UI ----------
   function init() {
-    const locationSelect = document.getElementById("locationSelect");
+    const homeSelect = document.getElementById("homeSelect");
+    const workSelect = document.getElementById("workSelect");
     LANDMARKS.forEach((lm, i) => {
-      const o = document.createElement("option");
-      o.value = "landmark:" + i; o.textContent = lm.name;
-      locationSelect.appendChild(o);
+      const o1 = document.createElement("option");
+      o1.value = "landmark:" + i; o1.textContent = lm.name;
+      homeSelect.appendChild(o1);
+      const o2 = document.createElement("option");
+      o2.value = "landmark:" + i; o2.textContent = lm.name;
+      workSelect.appendChild(o2);
     });
 
-    locationSelect.addEventListener("change", onLocationChange);
-    onLocationChange();
-
-    document.getElementById("locationLocateBtn").addEventListener("click", doGeocode);
-
-    // hospital type filter chips
-    const hospitalTypesEl = document.getElementById("hospitalTypeChips");
-    ["Government", "Private"].forEach((t) => {
+    allCurricula = Array.from(new Set(SCHOOLS.flatMap((s) => s.curricula))).sort();
+    const chipsEl = document.getElementById("curriculumChips");
+    allCurricula.forEach((c) => {
       const chip = document.createElement("div");
       chip.className = "chip";
-      chip.textContent = t;
+      chip.textContent = c;
       chip.addEventListener("click", () => {
-        if (activeHospitalTypes.has(t)) { activeHospitalTypes.delete(t); chip.classList.remove("active"); }
-        else { activeHospitalTypes.add(t); chip.classList.add("active"); }
+        if (activeCurricula.has(c)) { activeCurricula.delete(c); chip.classList.remove("active"); }
+        else { activeCurricula.add(c); chip.classList.add("active"); }
       });
-      hospitalTypesEl.appendChild(chip);
+      chipsEl.appendChild(chip);
     });
-    document.getElementById("findHospitalsBtn").addEventListener("click", runHospitalSearch);
 
-    // specialty dropdown
-    const specialtySelect = document.getElementById("specialtySelect");
-    const specialties = Array.from(new Set(DOCTORS.map((d) => d.specialty))).sort();
-    specialties.forEach((s) => {
-      const o = document.createElement("option");
-      o.value = s; o.textContent = s;
-      specialtySelect.appendChild(o);
-    });
-    specialtySelect.addEventListener("change", runDoctorSearch);
+    document.getElementById("homeSelect").addEventListener("change", onHomeChange);
+    document.getElementById("workSelect").addEventListener("change", onWorkChange);
+    onHomeChange(); onWorkChange();
 
-    document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    document.getElementById("homeLocateBtn").addEventListener("click", () => doGeocode("home"));
+    document.getElementById("workLocateBtn").addEventListener("click", () => doGeocode("work"));
+
+    const budgetSlider = document.getElementById("budgetSlider");
+    budgetSlider.addEventListener("input", () => {
+      document.getElementById("budgetValue").textContent = Number(budgetSlider.value).toLocaleString() + " SAR/yr";
     });
+    budgetSlider.dispatchEvent(new Event("input"));
+
+    const weightSlider = document.getElementById("weightSlider");
+    weightSlider.addEventListener("input", updateWeightLabel);
+    updateWeightLabel();
+
+    document.getElementById("findBtn").addEventListener("click", runSearch);
 
     const banner = document.getElementById("configBanner");
     if (!ORS_ENABLED) {
@@ -1437,31 +1267,33 @@ const DOCTORS = [
       banner.style.display = "none";
     }
 
-    // emergency numbers block
-    const emEl = document.getElementById("emergencyList");
-    if (emEl) {
-      emEl.innerHTML = EMERGENCY_NUMBERS.map((e) =>
-        `<div><a href="tel:${e.number}"><strong>${e.number}</strong></a> — ${e.label}</div>`).join("");
-    }
-
     initMap();
-    renderEmpty("Set your location above and hit “Find nearby hospitals” to see the closest ones here.");
   }
 
-  function onLocationChange() {
-    const v = document.getElementById("locationSelect").value;
-    document.getElementById("locationCustomRow").style.display = v === "custom" ? "flex" : "none";
+  function onHomeChange() {
+    const v = document.getElementById("homeSelect").value;
+    document.getElementById("homeCustomRow").style.display = v === "custom" ? "flex" : "none";
+  }
+  function onWorkChange() {
+    const v = document.getElementById("workSelect").value;
+    document.getElementById("workCustomRow").style.display = v === "custom" ? "flex" : "none";
+    document.getElementById("weightField").style.display = v === "skip" ? "none" : "block";
+  }
+  function updateWeightLabel() {
+    const w = document.getElementById("weightSlider").value;
+    document.getElementById("weightLabel").textContent = `Home ${100 - w}% / Work ${w}%`;
   }
 
-  async function doGeocode() {
-    const input = document.getElementById("locationCustom");
-    const status = document.getElementById("locationGeoStatus");
+  let geocodedPoints = { home: null, work: null };
+  async function doGeocode(which) {
+    const input = document.getElementById(which + "Custom");
+    const status = document.getElementById(which + "GeoStatus");
     const q = input.value.trim();
     if (!q) return;
     status.textContent = "Locating…";
     try {
       const pt = await geocode(q);
-      geocodedPoint = pt;
+      geocodedPoints[which] = pt;
       status.textContent = "✓ Found: " + pt.label.split(",").slice(0, 2).join(",");
     } catch (e) {
       status.textContent = ORS_ENABLED
@@ -1479,199 +1311,152 @@ const DOCTORS = [
   }
 
   function makeDivIcon(cls, html) {
-    return L.divIcon({ className: "leaflet-div-icon " + cls, html: html || "", iconSize: [16, 16] });
-  }
-  function makeHospitalIcon(html) {
-    return L.divIcon({ className: "leaflet-div-icon hospital-icon", html: html || "+", iconSize: [22, 22] });
+    return L.divIcon({ className: "leaflet-div-icon " + cls, html: html || "", iconSize: cls === "school-icon" ? [22, 22] : [16, 16] });
   }
 
-  function resolveLocation() {
-    const v = document.getElementById("locationSelect").value;
-    if (!v) return null;
-    if (v === "custom") return geocodedPoint;
-    if (v.startsWith("landmark:")) {
+  function resolvePoint(which) {
+    const select = document.getElementById(which + "Select");
+    const v = select.value;
+    if (v === "skip") return null;
+    if (v === "custom") return geocodedPoints[which];
+    if (v && v.startsWith("landmark:")) {
       const lm = LANDMARKS[parseInt(v.split(":")[1], 10)];
       return { lat: lm.lat, lon: lm.lon, label: lm.name };
     }
     return null;
   }
 
-  function switchTab(tab) {
-    if (tab === activeTab) return;
-    activeTab = tab;
-    document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.tab === tab);
-    });
-    document.getElementById("hospitalsPanel").style.display = tab === "hospitals" ? "block" : "none";
-    document.getElementById("doctorsPanel").style.display = tab === "doctors" ? "block" : "none";
-    document.getElementById("status").textContent = "";
-    clearAllMarkers();
-    if (tab === "hospitals") {
-      renderEmpty("Set your location above and hit “Find nearby hospitals” to see the closest ones here.");
-    } else {
-      renderEmpty("Pick a specialty above to see matching doctors.");
-    }
-  }
-
-  function clearAllMarkers() {
-    if (locationMarker) { map.removeLayer(locationMarker); locationMarker = null; }
-    Object.values(hospitalMarkers).forEach((m) => map.removeLayer(m));
-    for (const k in hospitalMarkers) delete hospitalMarkers[k];
-  }
-
-  function renderEmpty(msg) {
-    const el = document.getElementById("resultsList");
-    el.className = "results-empty";
-    el.innerHTML = msg;
-  }
-
-  // ---------- Hospitals tab ----------
-  async function runHospitalSearch() {
+  async function runSearch() {
     const statusEl = document.getElementById("status");
-    const loc = resolveLocation();
-    if (!loc) { statusEl.textContent = "Please choose or locate your location first."; return; }
+    const home = resolvePoint("home");
+    if (!home) { statusEl.textContent = "Please choose or locate a home location first."; return; }
+    const work = resolvePoint("work");
     statusEl.textContent = "";
 
-    let candidates = HOSPITALS.slice();
-    if (activeHospitalTypes.size > 0) {
-      candidates = candidates.filter((h) => activeHospitalTypes.has(h.type));
+    const budget = Number(document.getElementById("budgetSlider").value);
+    const weightWork = Number(document.getElementById("weightSlider").value) / 100;
+    const weightHome = 1 - weightWork;
+
+    // filter
+    let candidates = SCHOOLS.filter((s) => s.fee <= budget);
+    if (activeCurricula.size > 0) {
+      candidates = candidates.filter((s) => s.curricula.some((c) => activeCurricula.has(c)));
     }
     if (candidates.length === 0) {
-      renderEmpty("No hospitals match that filter in this sample dataset — try clearing the type filter.");
+      renderEmpty("No schools match that budget/curriculum combination in this sample dataset — try widening the budget or clearing curriculum filters.");
       return;
     }
 
-    candidates.forEach((h) => {
-      h._km = haversineKm(loc.lat, loc.lon, h.lat, h.lon);
-      h._min = estMinutesFromKm(h._km);
-      h._minReal = null;
-      h._attempted = false;
-      h._score = h._min;
+    // provisional scoring via haversine
+    candidates.forEach((s) => {
+      s._homeKm = haversineKm(home.lat, home.lon, s.lat, s.lon);
+      s._homeMin = estMinutesFromKm(s._homeKm);
+      s._homeMinReal = null;
+      if (work) {
+        s._workKm = haversineKm(work.lat, work.lon, s.lat, s.lon);
+        s._workMin = estMinutesFromKm(s._workKm);
+        s._workMinReal = null;
+      } else {
+        s._workKm = null; s._workMin = null; s._workMinReal = null;
+      }
+      s._score = work ? (weightHome * s._homeMin + weightWork * s._workMin) : s._homeMin;
     });
     candidates.sort((a, b) => a._score - b._score);
-    const top = candidates;
+    const top = candidates.slice(0, 12);
 
-    drawHospitalMap(loc, top);
-    renderHospitalResults(top);
+    drawMap(home, work, top);
+    renderResults(top, home, work);
 
-    if (!ORS_ENABLED) return;
+    if (!ORS_ENABLED) return; // stay on estimated times
 
+    // enrich with real driving times: one bulk Matrix call per origin
+    // (home, optionally work) instead of one call per school.
     try {
-      const durations = await matrixMinutes(loc.lat, loc.lon, top);
-      top.forEach((h, i) => { if (durations[i] != null) h._minReal = durations[i]; });
-    } catch (e) { /* keep estimates */ }
-    top.forEach((h) => { h._attempted = true; });
+      const homeDurations = await matrixMinutes(home.lat, home.lon, top);
+      top.forEach((s, i) => { if (homeDurations[i] != null) s._homeMinReal = homeDurations[i]; });
+    } catch (e) { /* keep estimates for all */ }
 
-    top.sort((a, b) => (a._minReal ?? a._min) - (b._minReal ?? b._min));
-    renderHospitalResults(top);
-    drawHospitalMap(loc, top);
+    if (work) {
+      try {
+        const workDurations = await matrixMinutes(work.lat, work.lon, top);
+        top.forEach((s, i) => { if (workDurations[i] != null) s._workMinReal = workDurations[i]; });
+      } catch (e) { /* keep estimates for all */ }
+    }
+
+    top.forEach((s) => {
+      s._score = work
+        ? (weightHome * (s._homeMinReal ?? s._homeMin) + weightWork * (s._workMinReal ?? s._workMin))
+        : (s._homeMinReal ?? s._homeMin);
+    });
+    top.sort((a, b) => a._score - b._score);
+    renderResults(top, home, work);
+    drawMap(home, work, top);
   }
 
-  function renderHospitalResults(list) {
+  function renderEmpty(msg) {
+    document.getElementById("resultsList").innerHTML = `<div class="results-empty">${msg}</div>`;
+  }
+
+  function renderResults(list, home, work) {
     const el = document.getElementById("resultsList");
-    el.className = "";
     el.innerHTML = "";
-    list.forEach((h, i) => {
+    list.forEach((s, i) => {
+      const homeStr = s._homeMinReal != null
+        ? `${Math.round(s._homeMinReal)} min drive from home`
+        : ORS_ENABLED
+          ? `<span class="spinner-inline"></span>~${Math.round(s._homeMin)} min from home <span class="muted">(estimating…)</span>`
+          : `~${Math.round(s._homeMin)} min from home <span class="muted">(estimated)</span>`;
+      const workStr = work
+        ? (s._workMinReal != null
+          ? ` · ${Math.round(s._workMinReal)} min from work`
+          : ORS_ENABLED
+            ? ` · <span class="spinner-inline"></span>~${Math.round(s._workMin)} min from work <span class="muted">(estimating…)</span>`
+            : ` · ~${Math.round(s._workMin)} min from work <span class="muted">(estimated)</span>`)
+        : "";
       const card = document.createElement("div");
       card.className = "result-card";
       card.innerHTML = `
         <div class="rank-badge">${i + 1}</div>
         <div class="result-body">
-          <div class="result-title">${h.name}</div>
-          <div class="result-meta">${h.district}${h.note ? " · " + h.note : ""}</div>
-          <div class="result-tags"><span class="tag">${h.type}</span></div>
-          <div class="commute-line">${commuteLine(h, "from you")}</div>
-          <div class="hospital-phone">Switchboard (non-emergency): <a href="tel:${h.phone.replace(/\s+/g, "")}">${h.phone}</a></div>
+          <div class="result-title">${s.name}</div>
+          <div class="result-meta">${s.district} · from ${s.fee.toLocaleString()} SAR/yr</div>
+          <div class="result-tags">${s.curricula.map((c) => `<span class="tag">${c}</span>`).join("")}</div>
+          <div class="commute-line">${homeStr}${workStr}</div>
         </div>`;
       card.addEventListener("click", () => {
-        map.panTo([h.lat, h.lon]);
-        if (hospitalMarkers[h.name]) hospitalMarkers[h.name].openPopup();
+        map.panTo([s.lat, s.lon]);
+        if (schoolMarkers[s.name]) schoolMarkers[s.name].openPopup();
       });
       el.appendChild(card);
     });
   }
 
-  function drawHospitalMap(loc, hospitals) {
-    clearAllMarkers();
-    locationMarker = L.marker([loc.lat, loc.lon], { icon: makeDivIcon("home-icon") })
-      .addTo(map).bindPopup("📍 You: " + (loc.label || ""));
-    const bounds = [[loc.lat, loc.lon]];
+  function drawMap(home, work, schools) {
+    if (homeMarker) map.removeLayer(homeMarker);
+    if (workMarker) map.removeLayer(workMarker);
+    Object.values(schoolMarkers).forEach((m) => map.removeLayer(m));
+    for (const k in schoolMarkers) delete schoolMarkers[k];
 
-    hospitals.forEach((h, i) => {
-      const m = L.marker([h.lat, h.lon], { icon: makeHospitalIcon(String(i + 1)) })
+    homeMarker = L.marker([home.lat, home.lon], { icon: makeDivIcon("home-icon") })
+      .addTo(map).bindPopup("🏠 Home: " + (home.label || ""));
+    const bounds = [[home.lat, home.lon]];
+
+    if (work) {
+      workMarker = L.marker([work.lat, work.lon], { icon: makeDivIcon("work-icon") })
+        .addTo(map).bindPopup("💼 Work: " + (work.label || ""));
+      bounds.push([work.lat, work.lon]);
+    }
+
+    schools.forEach((s, i) => {
+      const m = L.marker([s.lat, s.lon], { icon: makeDivIcon("school-icon", String(i + 1)) })
         .addTo(map)
-        .bindPopup(`<strong>${h.name}</strong><br>${h.district}<br>${h.type}<br>Switchboard: ${h.phone}<br><strong>Emergency? Call 997 or 911.</strong>`);
-      hospitalMarkers[h.name] = m;
-      bounds.push([h.lat, h.lon]);
+        .bindPopup(`<strong>${s.name}</strong><br>${s.district}<br>${s.curricula.join(", ")}<br>From ${s.fee.toLocaleString()} SAR/yr`);
+      schoolMarkers[s.name] = m;
+      bounds.push([s.lat, s.lon]);
     });
 
     if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40] });
     else map.setView(bounds[0], 13);
-  }
-
-  // ---------- Doctors tab ----------
-  async function runDoctorSearch() {
-    const specialty = document.getElementById("specialtySelect").value;
-    if (!specialty) { renderEmpty("Pick a specialty above to see matching doctors."); return; }
-    const matches = DOCTORS.filter((d) => d.specialty === specialty);
-    if (matches.length === 0) {
-      renderEmpty("No doctors curated for that specialty yet — this sample is still growing.");
-      return;
-    }
-
-    const loc = resolveLocation();
-    matches.forEach((d) => {
-      const h = hospitalBySlug(d.hospitalSlug);
-      if (loc && h) {
-        d._km = haversineKm(loc.lat, loc.lon, h.lat, h.lon);
-        d._min = estMinutesFromKm(d._km);
-        d._minReal = null;
-        d._attempted = false;
-      } else {
-        d._km = null; d._min = null; d._minReal = null; d._attempted = false;
-      }
-    });
-    if (loc) matches.sort((a, b) => (a._km ?? 1e9) - (b._km ?? 1e9));
-
-    renderDoctorResults(matches, loc);
-
-    if (!loc || !ORS_ENABLED) return;
-    const withHospital = matches.filter((d) => hospitalBySlug(d.hospitalSlug));
-    if (withHospital.length === 0) return;
-    try {
-      const destinations = withHospital.map((d) => hospitalBySlug(d.hospitalSlug));
-      const durations = await matrixMinutes(loc.lat, loc.lon, destinations);
-      withHospital.forEach((d, i) => { if (durations[i] != null) d._minReal = durations[i]; });
-    } catch (e) { /* keep estimates */ }
-    withHospital.forEach((d) => { d._attempted = true; });
-    matches.sort((a, b) => (a._minReal ?? a._min ?? 1e9) - (b._minReal ?? b._min ?? 1e9));
-    renderDoctorResults(matches, loc);
-  }
-
-  function renderDoctorResults(list, loc) {
-    const el = document.getElementById("resultsList");
-    el.className = "";
-    el.innerHTML = "";
-    list.forEach((d) => {
-      const h = hospitalBySlug(d.hospitalSlug);
-      const quals = (d.qualifications || []).slice(0, 4).map((q) => `<li>${q}</li>`).join("");
-      const langs = (d.languages || []).map((l) => `<span class="lang-pill">${l}</span>`).join("");
-      const commute = loc && d._min != null ? `<div class="commute-line">${commuteLine(d, "from you")}</div>` : "";
-      const card = document.createElement("div");
-      card.className = "doctor-card";
-      card.innerHTML = `
-        <div class="doctor-name">${d.name}</div>
-        <div class="doctor-specialty">${d.specialty}</div>
-        <div class="doctor-hospital">${h ? h.name + " · " + h.district : ""}${d.experienceYears ? " · " + d.experienceYears + " yrs experience" : ""}</div>
-        ${commute}
-        ${quals ? `<ul class="doctor-quals">${quals}</ul>` : ""}
-        ${langs ? `<div class="doctor-langs">${langs}</div>` : ""}
-        <div class="doctor-actions">
-          <a class="btn-secondary" href="${d.sourceUrl}" target="_blank" rel="noopener">View profile &amp; book →</a>
-          ${h ? `<a class="btn-secondary" href="tel:${h.phone.replace(/\s+/g, "")}">Call ${h.phone}</a>` : ""}
-        </div>`;
-      el.appendChild(card);
-    });
   }
 
   document.addEventListener("DOMContentLoaded", init);
@@ -1680,10 +1465,11 @@ const DOCTORS = [
 </script>
 
 <!-- Privacy-respecting analytics (GoatCounter — no cookies, no personal data
-     collected). Sign up free at https://www.goatcounter.com for a SEPARATE
-     site code for this tool (don't reuse your school-finder code), then
-     replace REPLACE_WITH_YOUR_GOATCOUNTER_CODE below. -->
-<script data-goatcounter="https://REPLACE_WITH_YOUR_GOATCOUNTER_CODE.goatcounter.com/count"
+     collected). Sign up free at https://www.goatcounter.com, then replace
+     riyadh-schools below with your site code. Until you
+     do, this script simply won't load anything (harmless 404), so it's safe
+     to deploy before you've set it up. -->
+<script data-goatcounter="https://riyadh-schools.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
